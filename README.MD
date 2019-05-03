@@ -1,5 +1,7 @@
 # MERN Stack
 
+**Важно!** Перед запуском `docker-compose` необходимо установить зависимости в каталогах `frontend-docker` и `backend-docker` и выполнить команду `npm run build`, в каждом из каталогов соответственно. После чего можно запускать `docker-compose up -d`.
+
 ### Frontend
 Находится в директории `frontend-docker`.
 1. Запуск проекта 
