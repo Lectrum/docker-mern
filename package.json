@@ -1,0 +1,13 @@
+{
+  "name": "docker",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "docker-compose build",
+    "up": "docker-compose up -d",
+    "stop": "docker-compose stop",
+    "start": "docker-compose start",
+    "down": "docker-compose down"
+  }
+}

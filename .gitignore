@@ -1,0 +1,5 @@
+/data
+/frontend-docker/node_modules
+/frontend-docker/build
+/backend-docker/node_modules
+/backend-docker/build

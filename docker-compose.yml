@@ -1,0 +1,77 @@
+version: "2.4"
+
+services:
+  proxy:
+    image: docker/proxy
+    build: ./proxy
+    container_name: proxy
+    ports:
+      - 80:80
+    volumes:
+      - ./proxy/nginx.conf:/etc/nginx/nginx.conf:ro
+    healthcheck:
+      test: curl -f localhost/ & curl -f localhost/api/ping || exit 1
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    depends_on: 
+      webhost:
+        condition: service_healthy
+      api:
+        condition: service_healthy
+    networks:
+      - front
+      - back
+
+  webhost:
+    image: docker/frontend
+    build: ./frontend-docker
+    container_name: webhost
+    healthcheck:
+      test: curl -f localhost/ || exit 1
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    depends_on: 
+      api:
+        condition: service_healthy
+    networks:
+      - front
+
+  api:
+    image: docker/backend
+    build: ./backend-docker
+    container_name: api
+    environment: 
+      - PORT=4000
+      - DB_URL=db
+      - DB_NAME=customers
+    healthcheck:
+      test: curl localhost:4000/api/ping
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    depends_on: 
+      db:
+        condition: service_healthy
+    networks:
+      - back
+
+  db:
+    image: mongo:4
+    container_name: db
+    volumes:
+      - ./data:/data/db
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongo db:27017/test --quiet
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    networks:
+      - back
+
+networks:
+  front:
+    driver: bridge
+  back:
+    driver: bridge
