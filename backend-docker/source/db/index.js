@@ -8,19 +8,18 @@ const DB_NAME = getDbName();
 const DB_URL = getDbUrl();
 
 const mongooseOptions = {
-    promiseLibrary:    global.Promise,
-    poolSize:          10,
-    keepAlive:         30000,
-    connectTimeoutMS:  5000,
-    reconnectTries:    Number.MAX_SAFE_INTEGER,
-    reconnectInterval: 5000,
-    useNewUrlParser:   true,
-    useFindAndModify:  false,
-    useCreateIndex:    true,
+    promiseLibrary:     global.Promise,
+    poolSize:           10,
+    keepAlive:          30000,
+    connectTimeoutMS:   5000,
+    useNewUrlParser:    true,
+    useFindAndModify:   false,
+    useCreateIndex:     true,
+    useUnifiedTopology: true,
 };
 
 // mongodb://username:password@localhost:27017/users
-const connection = mongoose.connect(`mongodb://${DB_URL}:27017/${DB_NAME}`, mongooseOptions);
+const connection = mongoose.connect(`mongodb://${DB_URL}/${DB_NAME}`, mongooseOptions);
 
 connection
     .then(() => {
